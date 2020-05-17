@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        //数组中新增了 map 和 reduce 方法。
+        //map():接收一个函数，将原函数中的所有元素用这个函数处理后放入新数组返回
+        let arr = ['1', '20', '-5', '3'];
+
+        arr = arr.map(item => 
+            item * 2
+        );
+
+        console.info(arr)
+
+
+        //reduce()为数组中每一个元素执行回调函数，不包括数组中被删除或从未被福值的元素
+        //[2, 40, 10, 6]
+        let result = arr.reduce((a, b) => {
+            console.info("上一次处理后:" + a);
+            console.info("当前正在处理:" + b);
+            return a + b;
+        }, 100);
+    
+        console.info(result);
+    </script> 
+</body>
+</html>
