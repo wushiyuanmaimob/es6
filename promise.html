@@ -3,12 +3,116 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.5.0.js"></script>
     <title>Document</title>
 </head>
 <body>
     <script>
+        //1.查出当前用户信息
+        //2.按照当前用户的id查出他的课程
+        //3.按照当前课程的id查出分数
         //1.promise 可以封装异步操作
-        
+
+        // $.ajax({
+        //     url : "mock/user.json",
+        //     success : function(data) {
+        //         console.info("当前用户信息获取成功", data);
+        //         $.ajax({
+        //             url : `mock/user_course_${data.id}.json`,
+        //             success : function(data) {
+        //                 console.info("课程信息获取成功", data);
+        //                 $.ajax({
+        //                     url : `mock/course_score_${data.id}.json`,
+        //                     success : function(data) {
+        //                         console.info("分数信息获取成功", data);
+        //                     },
+        //                     error : function(error) {
+        //                         console.info("分数信息获取异常");
+        //                     }
+        //                 })
+        //             },
+        //             error : function(error) {
+        //                 console.info("课程信息获取异常");
+        //             }
+        //         })
+        //     },
+        //     error : function(error) {
+        //         console.info("当前用户信息获取异常", error);
+        //     }
+        // })
+
+        // let p = new Promise((resolve, reject) => {
+        //     $.ajax({
+        //         url : "mock/user.json",
+        //         success : function(data) {
+        //             console.info("查询用户成功", data);
+        //             resolve(data);
+        //         },
+        //         error : function(error) {
+        //             reject(error);
+        //         }
+        //     });
+        // });
+
+        // p.then((obj) => {
+        //     return new Promise((resolve, reject) => {
+        //         $.ajax({
+        //         url : `mock/user_course_${obj.id}.json`,
+        //         success : function(data) {
+        //             console.info("查询用户课程成功", data)
+        //             resolve(data);
+        //         },
+        //         error : function(error) {
+        //             reject(error);
+        //         }
+        //     })
+        //     })
+        // }).then((obj) => {
+        //     return new Promise((resolve, reject) => {
+        //         $.ajax({
+        //             url : `mock/course_score_${obj.id}.json`,
+        //             success : function(data) {
+        //                 console.info("查询课程分数成功", data);
+        //             },
+        //             error : function(error) {
+        //                 reject(error);
+        //             }
+        //         })
+        //     })
+        // }).catch((err) => {
+        //     console.info(err);
+        // })
+
+        function get(url, data) {
+            return new Promise((resolve, reject) => {
+                $.ajax({
+                    url : url,
+                    data : data,
+                    success : function(data) {
+                        resolve(data);
+                    },
+                    error : function(error) {
+                        reject(error);
+                    }
+                })
+            })
+        }
+
+        get("mock/user.json")
+            .then((data) => {
+                console.info("用户信息查询成功", data);
+                return get(`mock/user_course_${data.id}.json`);
+            })
+            .then((data) => {
+                console.info("课程信息查询成功", data);
+                return get(`mock/course_score_${data.id}.json`);
+            })
+            .then((data) => {
+                console.info("课程成绩查询成功", data);
+            })
+            .catch((error) => {
+                console.info("出现异常", error);
+            })
     </script>
 </body>
 </html>
